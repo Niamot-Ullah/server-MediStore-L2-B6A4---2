@@ -4,7 +4,7 @@ import { UserRole } from "../../middileware/auth";
 
 
 const createCategories = async (req: Request, res: Response) => {
-    // console.log(req.body);
+  
     try {
         const result = await categoriesService.createCategories(req.body)
         res.status(201).json({

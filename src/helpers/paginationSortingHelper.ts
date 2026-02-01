@@ -14,7 +14,7 @@ type iOptionResult = {
 };
 
 const paginationSortingHelper = (options: IOption): iOptionResult => {
-    // Set defaults for page and limit
+   
     const page = options.page ? Number(options.page) : 1;
     const limit = options.limit ? Number(options.limit) : 10;
     const skip = (page - 1) * limit;

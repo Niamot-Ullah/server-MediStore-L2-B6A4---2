@@ -83,6 +83,7 @@ const getMyPostedMedicine = async (req: Request, res: Response) => {
         const userId = user?.id
         const result = await medicineService.getMyPostedMedicine(userId)
 
+        
         res.status(200).json({
             success: true,
             message: "Seller Data Retrieved Successfully",
