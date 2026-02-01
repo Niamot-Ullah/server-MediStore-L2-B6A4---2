@@ -142,6 +142,8 @@ const getAllMedicine = async (payload: {
         })
     ]);
 
+
+    
     return {
         data: result,
         pagination: {
