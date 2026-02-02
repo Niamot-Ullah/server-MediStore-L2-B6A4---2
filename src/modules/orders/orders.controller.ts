@@ -170,6 +170,39 @@ const getAllOrders = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrderStatusBySeller = async (req: Request, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const orderId = req.params.id;
+    const { status } = req.body;
+
+    if (!orderId || typeof orderId !== "string") {
+      return res.status(400).json({ success: false, message: "Invalid order id" });
+    }
+
+    if (!status || typeof status !== "string") {
+      return res.status(400).json({ success: false, message: "Status is required" });
+    }
+
+    const result = await ordersService.updateOrderStatusBySeller(orderId, user.id, status);
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 
 export const ordersController = {
@@ -178,7 +211,8 @@ export const ordersController = {
     getMyOrders,
     cancelOrder,
     getSellerOrders,
-    getAllOrders
+    getAllOrders,
+    updateOrderStatusBySeller
 
 
 

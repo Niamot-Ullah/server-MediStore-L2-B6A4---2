@@ -168,22 +168,50 @@ const getSellerOrders = async (sellerId: string) => {
 };
 
 const getAllOrders = async () => {
-  const orders = await prisma.order.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    include: {
-      medicine: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
+    const orders = await prisma.order.findMany({
+        orderBy: {
+            createdAt: "desc",
         },
-      }
-    },
-  });
+        include: {
+            medicine: {
+                select: {
+                    id: true,
+                    name: true,
+                    image: true,
+                },
+            }
+        },
+    });
 
-  return orders;
+    return orders;
+};
+
+const updateOrderStatusBySeller = async (orderId: string, sellerId: string, status: string) => {
+    return prisma.$transaction(async (tx) => {
+        const order = await tx.order.findUnique({
+            where: { id: orderId },
+            include: { medicine: true },
+        });
+
+        if (!order) throw new Error("Order not found");
+
+        if (order.medicine.sellerId !== sellerId) {
+            throw new Error("Unauthorized: This order does not belong to you");
+        }
+
+        
+        const allowedStatuses = Object.values(OrderStatus);
+        if (!allowedStatuses.includes(status as OrderStatus)) {
+            throw new Error(`Invalid status. Allowed statuses: ${allowedStatuses.join(", ")}`);
+        }
+
+        const updatedOrder = await tx.order.update({
+            where: { id: orderId },
+            data: { status: status as OrderStatus },
+        });
+
+        return updatedOrder;
+    });
 };
 
 
@@ -194,7 +222,8 @@ export const ordersService = {
     getMyOrders,
     cancelOrder,
     getSellerOrders,
-    getAllOrders
+    getAllOrders,
+    updateOrderStatusBySeller
 
 
 

@@ -8,7 +8,7 @@ import { ordersController } from './orders.controller'
 
 const router = express.Router()
 
-
+router.get("/seller",auth(UserRole.SELLER,UserRole.ADMIN),ordersController.getSellerOrders);
 router.post('/:id', auth(UserRole.ADMIN, UserRole.SELLER, UserRole.CUSTOMER), ordersController.createOrder)
 
 router.get("/my",auth(UserRole.CUSTOMER),ordersController.getMyOrders);
@@ -17,8 +17,10 @@ router.get("/:id", auth(UserRole.CUSTOMER), ordersController.getOrderById);
 router.patch("/:id/cancel",auth(UserRole.CUSTOMER),ordersController.cancelOrder
 );
 
+router.patch("/:id/status",auth(UserRole.SELLER),ordersController.updateOrderStatusBySeller
+);
 
-router.get("/seller",auth(UserRole.SELLER,UserRole.ADMIN),ordersController.getSellerOrders);
+
 
 router.get("/",auth(UserRole.ADMIN),ordersController.getAllOrders);
 
