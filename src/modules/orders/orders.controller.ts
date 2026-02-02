@@ -7,92 +7,92 @@ import { ordersService } from "./orders.service";
 
 const createOrder = async (req: Request, res: Response) => {
 
-    try {
-        const user = req.user
-        if (!user) {
-            return res.status(401).json({
-                success: false,
-                error: "Unauthorized",
-            });
-        }
-        if (user?.role !== 'CUSTOMER') {
-            return res.status(400).json({
-                success: false,
-                error: "Only Customers are allowed to make Order",
-            });
-        }
-
-        const data = req.body
-        const medicineId = req.params.id as string;
-        const customerId = user?.id as string
-
-        const result = await ordersService.createOrder(customerId, medicineId, data)
-
-        res.status(200).json({
-            success: true,
-            message: "Order Created Successfully",
-            data: result,
-        });
-    } catch (error: any) {
-        res.status(400).json({
-            success: false,
-            message: error.message,
-        });
+  try {
+    const user = req.user
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        error: "Unauthorized",
+      });
     }
+    if (user?.role !== 'CUSTOMER') {
+      return res.status(400).json({
+        success: false,
+        error: "Only Customers are allowed to make Order",
+      });
+    }
+
+    const data = req.body
+    const medicineId = req.params.id as string;
+    const customerId = user?.id as string
+
+    const result = await ordersService.createOrder(customerId, medicineId, data)
+
+    res.status(200).json({
+      success: true,
+      message: "Order Created Successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 const getOrderById = async (req: Request, res: Response) => {
-    try {
-        if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: "Unauthorized",
-            });
-        }
-        const orderId = req.params.id;
-        if (!orderId || typeof orderId !== "string") {
-            return res.status(400).json({
-                success: false,
-                message: "Invalid order id",
-            });
-        }
-        const result = await ordersService.getOrderById(orderId, req.user.id);
-
-        res.status(200).json({
-            success: true,
-            message: "Order retrieved successfully",
-            data: result,
-        });
-    } catch (error: any) {
-        res.status(404).json({
-            success: false,
-            message: error.message,
-        });
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
+    const orderId = req.params.id;
+    if (!orderId || typeof orderId !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid order id",
+      });
+    }
+    const result = await ordersService.getOrderById(orderId, req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: "Order retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 
 const getMyOrders = async (req: Request, res: Response) => {
-    try {
-        if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: "Unauthorized",
-            });
-        }
-
-        const result = await ordersService.getMyOrders(req?.user?.id);
-
-        res.status(200).json({
-            success: true,
-            message: "My orders retrieved successfully",
-            data: result,
-        });
-    } catch (error: any) {
-        res.status(400).json({
-            success: false,
-            message: error.message ,
-        });
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
     }
+
+    const result = await ordersService.getMyOrders(req?.user?.id);
+
+    res.status(200).json({
+      success: true,
+      message: "My orders retrieved successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
 };
 const cancelOrder = async (req: Request, res: Response) => {
   try {
@@ -124,7 +124,7 @@ const cancelOrder = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: error.message ,
+      message: error.message,
     });
   }
 };
@@ -148,7 +148,7 @@ const getSellerOrders = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(400).json({
       success: false,
-      message: error.message ,
+      message: error.message,
     });
   }
 };
@@ -169,6 +169,8 @@ const getAllOrders = async (req: Request, res: Response) => {
     });
   }
 };
+
+
 
 const updateOrderStatusBySeller = async (req: Request, res: Response) => {
   try {
@@ -206,13 +208,13 @@ const updateOrderStatusBySeller = async (req: Request, res: Response) => {
 
 
 export const ordersController = {
-    createOrder,
-    getOrderById,
-    getMyOrders,
-    cancelOrder,
-    getSellerOrders,
-    getAllOrders,
-    updateOrderStatusBySeller
+  createOrder,
+  getOrderById,
+  getMyOrders,
+  cancelOrder,
+  getSellerOrders,
+  getAllOrders,
+  updateOrderStatusBySeller
 
 
 

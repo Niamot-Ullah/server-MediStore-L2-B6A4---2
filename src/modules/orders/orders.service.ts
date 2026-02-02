@@ -1,6 +1,8 @@
 import { Order, OrderStatus, Prisma } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
+
+
 type CreateOrderPayload = {
     quantity: number;
     shippingAddress: string;
@@ -199,7 +201,7 @@ const updateOrderStatusBySeller = async (orderId: string, sellerId: string, stat
             throw new Error("Unauthorized: This order does not belong to you");
         }
 
-        
+
         const allowedStatuses = Object.values(OrderStatus);
         if (!allowedStatuses.includes(status as OrderStatus)) {
             throw new Error(`Invalid status. Allowed statuses: ${allowedStatuses.join(", ")}`);
