@@ -4,8 +4,7 @@ import paginationSortingHelper from "../../helpers/paginationSortingHelper";
 import { UserRole } from "../../../generated/prisma/enums";
 
 const createMedicine = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log(req.user);
+
     try {
         if (!req.user) {
             return res.status(400).json({

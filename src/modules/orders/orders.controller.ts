@@ -80,7 +80,7 @@ const getMyOrders = async (req: Request, res: Response) => {
             });
         }
 
-        const result = await ordersService.getMyOrders(req.user.id);
+        const result = await ordersService.getMyOrders(req?.user?.id);
 
         res.status(200).json({
             success: true,

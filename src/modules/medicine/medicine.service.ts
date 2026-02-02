@@ -7,14 +7,11 @@ type CreateMedicineInput = {
     name: string;
     description?: string;
     categoryId: string;
-    sellerId: string;
     price: Prisma.Decimal | number | string;
     stock: number;
     image?: string;
     isActive?: boolean;
 };
-
-
 
 const createMedicine = async (data: CreateMedicineInput, userId: string) => {
     const result = await prisma.medicine.create({
