@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.post('/' ,categoriesController.createCategories)
 router.get('/',categoriesController.getAllCategories)
-router.patch('/:id',auth(UserRole.ADMIN),categoriesController.updateCategory)
+router.patch('/:id',categoriesController.updateCategory)
 
 router.delete('/:id',auth(UserRole.ADMIN),categoriesController.deleteCategory)
 

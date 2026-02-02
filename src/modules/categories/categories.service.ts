@@ -18,13 +18,13 @@ const createCategories = async (data: CreateCategoriesInput) => {
 const getAllCategories = async () => {
     return await prisma.categories.findMany()
 }
-const updateCategory = async (categoryId: string, data: Partial<Categories>, isAdmin: boolean) => {
+const updateCategory = async (categoryId: string, data: Partial<Categories>) => {
     const categoryData = await prisma.categories.findUniqueOrThrow({
         where: {
             id: categoryId
         }
     })
-    if (!isAdmin) throw new Error("Your are not owner of this post")
+    
     return await prisma.categories.update({
         where: {
             id: categoryData.id

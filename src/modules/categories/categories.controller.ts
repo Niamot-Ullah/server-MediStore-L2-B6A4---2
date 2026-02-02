@@ -37,11 +37,9 @@ const getAllCategories = async (req: Request, res: Response) => {
 const updateCategory = async (req: Request, res: Response) => {
     try {
         const categoryId = req?.params?.id as string
-        const user = req?.user
         const data = req.body
-        if (!user) throw new Error('You are Unauthorized')
-        const isAdmin = user.role === UserRole.ADMIN
-        const result = await categoriesService.updateCategory(categoryId, data, isAdmin)
+
+        const result = await categoriesService.updateCategory(categoryId, data)
         res.status(200).json({
             success: true,
             message: "Category Updated Successfully",
