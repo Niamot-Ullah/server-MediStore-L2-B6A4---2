@@ -4,7 +4,7 @@ import { UserRole } from "../../middileware/auth";
 
 
 const createCategories = async (req: Request, res: Response) => {
-  
+
     try {
         const result = await categoriesService.createCategories(req.body)
         res.status(201).json({
@@ -55,12 +55,7 @@ const updateCategory = async (req: Request, res: Response) => {
 const deleteCategory = async (req: Request, res: Response) => {
     try {
         const categoryId = req?.params?.id as string
-        const user = req?.user
-
-        if (!user) throw new Error('You are Unauthorized')
-        const isAdmin = user.role === UserRole.ADMIN
-
-        const result = await categoriesService.deleteCategory(categoryId, isAdmin)
+        const result = await categoriesService.deleteCategory(categoryId)
         res.status(200).json({
             success: true,
             message: "Category Deleted Successfully",

@@ -24,7 +24,7 @@ const updateCategory = async (categoryId: string, data: Partial<Categories>) => 
             id: categoryId
         }
     })
-    
+
     return await prisma.categories.update({
         where: {
             id: categoryData.id
@@ -35,13 +35,12 @@ const updateCategory = async (categoryId: string, data: Partial<Categories>) => 
 
 }
 
-const deleteCategory = async (categoryId: string, isAdmin: boolean) => {
+const deleteCategory = async (categoryId: string) => {
     const categoryData = await prisma.categories.findUniqueOrThrow({
         where: {
             id: categoryId
         }
     })
-    if (!isAdmin) throw new Error("Your are not owner of this post")
     const result = await prisma.categories.delete({
         where: {
             id: categoryData.id
