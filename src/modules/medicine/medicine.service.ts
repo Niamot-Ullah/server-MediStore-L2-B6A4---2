@@ -23,67 +23,10 @@ const createMedicine = async (data: CreateMedicineInput, userId: string) => {
     return result
 }
 
-// const getAllMedicine = async (payload: {
-//     search: string | undefined,
-//     isFeatured: boolean | undefined,
-//     page: number;
-//     limit: number;
-//     skip: number;
-//     sortBy: string;
-//     sortOrder: string;
-
-// }) => {
-//     const { search, isFeatured, page, limit, skip, sortBy, sortOrder } = payload
-
-//     const andConditions: MedicineWhereInput[] = [];
-//     if (search) {
-//         andConditions.push({
-//             OR: [
-//                 {
-//                     name: {
-//                         contains: search as string,
-//                         mode: "insensitive"
-//                     }
-//                 },
-//                 {
-//                     description: {
-//                         contains: search as string,
-//                         mode: "insensitive"
-//                     }
-//                 },
-//             ],
-//         });
-//     }
-//     if (typeof isFeatured === "boolean") {
-//         andConditions.push({
-//             isFeatured,
-//         });
-//     }
-//     const result = await prisma.medicine.findMany({
-//         take: limit,
-//         skip,
-//         where: {
-//             AND: andConditions
-//         },
-//         orderBy: {
-//             [sortBy]: sortOrder,
-//         },
-//     })
-//     const total = await prisma.medicine.count({
-//         where: {
-//             AND: andConditions,
-//         },
-//     });
-//     return {
-//         data: result,
-//         pagination: {
-//             total,
-//             page,
-//             limit,
-//             totalPages: Math.ceil(total / limit),
-//         },
-//     }
-// };
+const getAllMedicineForAdmin = async () => {
+    const result = await prisma.medicine.findMany()
+    return result
+};
 
 const getAllMedicine = async (payload: {
     search: string | undefined;
@@ -238,10 +181,7 @@ const getMedicineById = async (id: string) => {
     });
 }
 
-// include: {
-//             category: true, 
-//             reviews:true
-//         },
+
 
 
 
@@ -307,6 +247,7 @@ export const medicineService = {
     updateMedicine,
     deleteMedicine,
     getMyPostedMedicine,
-    getStats
+    getStats,
+    getAllMedicineForAdmin
 
 }

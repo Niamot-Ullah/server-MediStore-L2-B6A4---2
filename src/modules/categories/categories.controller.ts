@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { categoriesService } from "./categories.service";
-import { UserRole } from "../../middileware/auth";
+
 
 
 const createCategories = async (req: Request, res: Response) => {

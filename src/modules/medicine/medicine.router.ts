@@ -7,7 +7,11 @@ const router = express.Router()
 
 
 router.post('/', auth(UserRole.ADMIN, UserRole.SELLER), medicineController.createMedicine)
+
 router.get('/', medicineController.getAllMedicine)
+
+router.get('/admin', medicineController.getAllMedicineForAdmin)
+
 router.get('/my-posted-medicine', auth(UserRole.ADMIN, UserRole.SELLER), medicineController.getMyPostedMedicine)
 router.get('/stats',medicineController.getStats)
 

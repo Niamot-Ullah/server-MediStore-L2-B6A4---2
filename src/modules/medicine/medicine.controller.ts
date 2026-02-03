@@ -43,7 +43,7 @@ const getAllMedicine = async (req: Request, res: Response) => {
 
         const { page, limit, skip, sortBy, sortOrder } = paginationSortingHelper(req.query);
 
-        // DEBUG: Log the parameters
+
         console.log('Query params:', { search: searchString, isFeatured, page, limit, skip, sortBy, sortOrder });
 
         const result = await medicineService.getAllMedicine({
@@ -56,7 +56,7 @@ const getAllMedicine = async (req: Request, res: Response) => {
             sortOrder
         });
 
-        // DEBUG: Log the result
+
         console.log('Result:', {
             dataLength: result.data?.length,
             pagination: result.pagination
@@ -75,6 +75,29 @@ const getAllMedicine = async (req: Request, res: Response) => {
         });
     }
 };
+const getAllMedicineForAdmin = async (req: Request, res: Response) => {
+    try {
+
+
+        const result = await medicineService.getAllMedicineForAdmin();
+
+        res.status(200).json({
+            success: true,
+            message: "Data Retrieved Successfully",
+            data: result
+        });
+    } catch (error) {
+        console.error('Error in getAllMedicine:', error);
+        res.status(400).json({
+            success: false,
+            message: error instanceof Error ? error.message : 'Unknown error',
+        });
+    }
+};
+
+
+
+
 const getMyPostedMedicine = async (req: Request, res: Response) => {
     try {
         const user = req.user
@@ -82,7 +105,7 @@ const getMyPostedMedicine = async (req: Request, res: Response) => {
         const userId = user?.id
         const result = await medicineService.getMyPostedMedicine(userId)
 
-        
+
         res.status(200).json({
             success: true,
             message: "Seller Data Retrieved Successfully",
@@ -195,5 +218,6 @@ export const medicineController = {
     deleteMedicine,
     getMyPostedMedicine,
     getStats,
+    getAllMedicineForAdmin
 
 }
