@@ -181,7 +181,8 @@ const getAllOrders = async () => {
                     name: true,
                     image: true,
                 },
-            }
+            },
+            
         },
     });
 

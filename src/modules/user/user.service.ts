@@ -10,6 +10,9 @@ const getMyProfile = async (userId: string) => {
         }
     })
 }
+const getAllUser = async () => {
+    return await prisma.user.findMany()
+}
 
 
 
@@ -47,7 +50,8 @@ const updateMyProfile = async (data: Prisma.UserUpdateInput, userId: string, isA
 export const userService = {
 
     getMyProfile,
-    updateMyProfile
+    updateMyProfile,
+    getAllUser
 
 
 

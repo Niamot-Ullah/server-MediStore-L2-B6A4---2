@@ -8,8 +8,15 @@ import { userController } from './user.controller'
 const router = express.Router()
 
 
-router.get('/', auth(UserRole.ADMIN, UserRole.SELLER, UserRole.CUSTOMER),userController.getMyProfile)
-router.patch('/', auth(UserRole.ADMIN, UserRole.SELLER, UserRole.CUSTOMER),userController.updateMyProfile)
+router.get('/me', auth(UserRole.ADMIN, UserRole.SELLER, UserRole.CUSTOMER),userController.getMyProfile)
+
+
+router.get('/', auth(UserRole.ADMIN),userController.getAllUser)
+
+
+
+router.patch('/status', auth(UserRole.ADMIN),userController.updateMyProfile)
+
 
 
 

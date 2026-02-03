@@ -5,7 +5,7 @@ import { userService } from "./user.service";
 
 
 const getMyProfile = async (req: Request, res: Response) => {
-     
+
     try {
         const userId = req.user?.id as string
         const result = await userService.getMyProfile(userId)
@@ -18,24 +18,43 @@ const getMyProfile = async (req: Request, res: Response) => {
     } catch (error: any) {
         res.status(400).json({
             success: false,
-            message: error.message ,
+            message: error.message,
+        });
+    }
+};
+const getAllUser = async (req: Request, res: Response) => {
+
+    try {
+        const user = req?.user
+        if (user?.role !== UserRole.ADMIN) {
+            throw new Error('Unauthorized')
+        }
+        const result = await userService.getAllUser()
+
+        res.status(200).json({
+            success: true,
+            message: "Data Retrieved Successfully",
+            data: result,
+        });
+    } catch (error: any) {
+        res.status(400).json({
+            success: false,
+            message: error.message,
         });
     }
 };
 
 const updateMyProfile = async (req: Request, res: Response) => {
     try {
-     
+
         const user = req?.user
         const data = req.body
         if (!user) throw new Error('You are Unauthorized')
-        const userId = user.id 
+        const userId = user.id
 
-        // const isCustomer = user.role === UserRole.CUSTOMER
-        // const isSeller = user.role === UserRole.SELLER
         const isAdmin = user.role === UserRole.ADMIN
 
-        const result = await userService.updateMyProfile(data,userId,isAdmin)
+        const result = await userService.updateMyProfile(data, userId, isAdmin)
 
         res.status(200).json({
             success: true,
@@ -54,9 +73,10 @@ const updateMyProfile = async (req: Request, res: Response) => {
 
 
 export const userController = {
-   getMyProfile,
-   updateMyProfile
-   
-   
+    getMyProfile,
+    updateMyProfile,
+    getAllUser
+
+
 
 }
