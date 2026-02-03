@@ -44,17 +44,14 @@ const getAllUser = async (req: Request, res: Response) => {
     }
 };
 
-const updateMyProfile = async (req: Request, res: Response) => {
+const updateUserProfile = async (req: Request, res: Response) => {
     try {
-
         const user = req?.user
         const data = req.body
-        if (!user) throw new Error('You are Unauthorized')
-        const userId = user.id
+        if (user?.role !== UserRole.ADMIN) throw new Error('You are Unauthorized')
+        const id = req?.params.id as string
 
-        const isAdmin = user.role === UserRole.ADMIN
-
-        const result = await userService.updateMyProfile(data, userId, isAdmin)
+        const result = await userService.updateUserProfile(id, data)
 
         res.status(200).json({
             success: true,
@@ -74,7 +71,7 @@ const updateMyProfile = async (req: Request, res: Response) => {
 
 export const userController = {
     getMyProfile,
-    updateMyProfile,
+    updateUserProfile,
     getAllUser
 
 

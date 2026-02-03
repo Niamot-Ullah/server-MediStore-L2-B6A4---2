@@ -15,7 +15,7 @@ router.get('/', auth(UserRole.ADMIN),userController.getAllUser)
 
 
 
-router.patch('/status', auth(UserRole.ADMIN),userController.updateMyProfile)
+router.patch('/status/:id', auth(UserRole.ADMIN),userController.updateUserProfile)
 
 
 

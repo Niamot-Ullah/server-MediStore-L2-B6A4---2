@@ -16,30 +16,16 @@ const getAllUser = async () => {
 
 
 
-const updateMyProfile = async (data: Prisma.UserUpdateInput, userId: string, isAdmin: boolean) => {
-
-
-    const userData = await prisma.user.findUniqueOrThrow({
-        where: {
-            id: userId
-        }
-    })
-
-    if (userData.id !== userId) throw new Error("Your are not authorized")
-
-    if (!isAdmin) delete data.role
-    if (!isAdmin) delete data.emailVerified
-
-
+const updateUserProfile = async (
+    id: string,
+    data: Prisma.UserUpdateInput
+) => {
     return await prisma.user.update({
-        where: {
-            id: userData.id
-        },
+        where: { id },
         data
     })
-
-
 }
+
 
 
 
@@ -50,7 +36,7 @@ const updateMyProfile = async (data: Prisma.UserUpdateInput, userId: string, isA
 export const userService = {
 
     getMyProfile,
-    updateMyProfile,
+    updateUserProfile,
     getAllUser
 
 
