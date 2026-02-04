@@ -1,3 +1,7 @@
+docs : https://docs.google.com/document/d/1WAmWVGUUsGbFQ9DCfJmWFk_8-73QpAEcBj_-KFIi59Y/edit?usp=sharing
+
+
+
 # MediStore Backend API 💊
 
 > Backend API for MediStore - Your Trusted Online Medicine Shop
@@ -5,6 +9,8 @@
 A full-stack e-commerce backend for managing over-the-counter (OTC) medicine sales, inventory, and orders. Built to support customers, sellers, and administrators with role-based access control.
 
 ---
+
+
 
 ## 📋 Table of Contents
 
