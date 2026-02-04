@@ -13,7 +13,7 @@ const createMedicine = async (req: Request, res: Response) => {
             });
         }
 
-        console.log(req.user);
+        // console.log(req.user);
         const result = await medicineService.createMedicine(req.body, req.user.id)
         res.status(201).json({
             success: true,

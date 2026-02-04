@@ -5,58 +5,78 @@ import nodemailer from "nodemailer";
 
 
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false, // Use true for port 465, false for port 587
-    auth: {
-        user: process.env.APP_USER,
-        pass: process.env.APP_PASSWORD,
-    },
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false, // Use true for port 465, false for port 587
+  auth: {
+    user: process.env.APP_USER,
+    pass: process.env.APP_PASSWORD,
+  },
 });
 
 
 export const auth = betterAuth({
-    database: prismaAdapter(prisma, {
-        provider: "postgresql",
-    }),
-    // trustedOrigins: ["http://localhost:3000"],
-    trustedOrigins: [process.env.FRONTEND_APP_URL!],
-    user: {
-        additionalFields: {
-            role: {
-                type: "string",
-                defaultValue: "CUSTOMER",
-                required: false,
-            },
-            phone: {
-                type: "string",
-                required: false,
-            },
-            status: {
-                type: "string",
-                defaultValue: "ACTIVE",
-                required: false,
-            },
-        },
+  database: prismaAdapter(prisma, {
+    provider: "postgresql",
+  }),
+  // trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: [process.env.FRONTEND_APP_URL!],
+  cookies: {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+  },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60, // 5 minutes
     },
-    emailAndPassword: {
-        enabled: true,
-        autoSignIn: false,
-        requireEmailVerification: true,
+  },
+  advanced: {
+    cookiePrefix: "better-auth",
+    useSecureCookies: process.env.NODE_ENV === "production",
+    useSecureCookie:true,
+    crossSubDomainCookies: {
+      enabled: false,
     },
-    emailVerification: {
-        sendOnSignUp: true,
-        autoSignInAfterVerification: true,
-        sendVerificationEmail: async ({ user, url, token }, request) => {
+    disableCSRFCheck: true, // Allow requests without Origin header (Postman, mobile apps, etc.)
+  },
 
-            try {
-                const verificationUrl = `${process.env.FRONTEND_APP_URL}/verify-email?token=${token}`;
-                const info = await transporter.sendMail({
-                    from: `"MediStore" <${process.env.APP_USER}>`,
-                    to: user.email, 
-                    subject: "Verify Your Email Address",
-                    text: `Please verify your email address by clicking this link: ${verificationUrl}`,
-                    html: `
+  user: {
+    additionalFields: {
+      role: {
+        type: "string",
+        defaultValue: "CUSTOMER",
+        required: false,
+      },
+      phone: {
+        type: "string",
+        required: false,
+      },
+      status: {
+        type: "string",
+        defaultValue: "ACTIVE",
+        required: false,
+      },
+    },
+  },
+  emailAndPassword: {
+    enabled: true,
+    autoSignIn: false,
+    requireEmailVerification: true,
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, url, token }, request) => {
+
+      try {
+        const verificationUrl = `${process.env.FRONTEND_APP_URL}/verify-email?token=${token}`;
+        const info = await transporter.sendMail({
+          from: `"MediStore" <${process.env.APP_USER}>`,
+          to: user.email,
+          subject: "Verify Your Email Address",
+          text: `Please verify your email address by clicking this link: ${verificationUrl}`,
+          html: `
       <!DOCTYPE html>
       <html lang="en">
       <head>
@@ -143,24 +163,24 @@ export const auth = betterAuth({
       </body>
       </html>
     `,
-                });
-                console.log("Message sent:", info.messageId);
+        });
+        console.log("Message sent:", info.messageId);
 
-            } catch (error) {
-                console.log(error);
-                throw error
-            }
+      } catch (error) {
+        console.log(error);
+        throw error
+      }
 
-        },
     },
+  },
 
-    socialProviders: {
-        google: {
-            prompt: "select_account consent",
-            accessType: "offline",
+  socialProviders: {
+    google: {
+      prompt: "select_account consent",
+      accessType: "offline",
 
-            clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-        },
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
+  },
 });

@@ -30,7 +30,7 @@ async function seedAdmin() {
             body: JSON.stringify(adminData)
         })
 
-        console.log(signUpAdmin);
+        // console.log(signUpAdmin);
         if (signUpAdmin.ok) {
             await prisma.user.update({
                 where: {
